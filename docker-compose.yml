@@ -1,0 +1,7 @@
+version: "3.8"
+
+services:
+  passwordmanager:
+    build: .
+    volumes:
+      - ./src:/app/src

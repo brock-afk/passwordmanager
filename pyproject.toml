@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[metadata]
+name = "passwordmanager"
+version = "0.1.0"
+
+[options]
+python_requires = "^3.11"
+
+[options.dependencies]
+cryptography = "^3.4"
+pytest = "^6.2.2"
