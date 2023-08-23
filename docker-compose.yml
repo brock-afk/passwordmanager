@@ -1,7 +1,12 @@
 version: "3.8"
 
 services:
-  passwordmanager:
+  pm:
     build: .
     volumes:
       - ./src:/app/src
+  poetry:
+    build: .
+    volumes:
+      - ./:/app
+    entrypoint: poetry

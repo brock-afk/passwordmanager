@@ -1,11 +1,12 @@
-FROM python:3.11-slim
+FROM python:3.11.4-slim
 
 WORKDIR /app
 
 RUN pip install --upgrade pip
+RUN pip install poetry==1.5.1
 
 COPY . /app/
 
-RUN pip install -e .
+RUN poetry install --sync
 
-ENTRYPOINT [ "python", "-m", "passwordmanager" ]
+ENTRYPOINT [ "poetry", "run", "python", "-m", "passwordmanager" ]
