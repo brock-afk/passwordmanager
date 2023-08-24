@@ -9,4 +9,6 @@ COPY . /app/
 
 RUN poetry install --sync
 
-ENTRYPOINT [ "poetry", "run", "python", "-m", "passwordmanager" ]
+ENTRYPOINT [ "poetry", "run" ]
+
+CMD [ "python", "-m", "passwordmanager" ]
