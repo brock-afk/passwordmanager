@@ -21,6 +21,10 @@ class VaultRepository(ABC):
         pass
 
     @abstractmethod
+    async def get_all(self) -> list[Vault]:
+        pass
+
+    @abstractmethod
     async def get(self, id: str) -> Vault:
         pass
 

@@ -1,5 +1,7 @@
-import os
 import json
+import pathlib
+
+from passwordmanager.vault.interface import Vault
 
 from .interface import Vault, VaultRepository
 
@@ -9,6 +11,27 @@ __all__ = ["JSONVaultRepository"]
 class JSONVaultRepository(VaultRepository):
     def __init__(self, vaults_directory: str):
         self.vaults_directory = vaults_directory
+
+    async def get_all(self) -> list[Vault]:
+        vaults_path = pathlib.Path(self.vaults_directory)
+
+        if not vaults_path.exists():
+            return []
+
+        return [
+            Vault(
+                id=vault_path.stem,
+                accounts=[
+                    Vault.Account(
+                        name=account["name"],
+                        username=account["username"],
+                        password=account["password"],
+                    )
+                    for account in json.load(vault_path.open("r"))["accounts"]
+                ],
+            )
+            for vault_path in vaults_path.iterdir()
+        ]
 
     async def get(self, vault_id: str) -> Vault | None:
         try:
@@ -30,7 +53,7 @@ class JSONVaultRepository(VaultRepository):
         )
 
     async def create(self, vault_id: str) -> Vault:
-        if os.path.exists(f"{self.vaults_directory}/{vault_id}.json"):
+        if pathlib.Path(f"{self.vaults_directory}/{vault_id}.json").exists():
             raise self.VaultExists("A vault with this ID already exists.")
 
         with open(f"{self.vaults_directory}/{vault_id}.json", "w") as data:
