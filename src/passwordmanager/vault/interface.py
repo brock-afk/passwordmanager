@@ -18,13 +18,13 @@ class Vault:
 
 class VaultRepository(ABC):
     @abstractmethod
-    def get(self, id: str) -> Vault:
+    async def get(self, id: str) -> Vault:
         pass
 
     @abstractmethod
-    def create(self, id: str) -> Vault:
+    async def create(self, id: str) -> Vault:
         pass
 
     @abstractmethod
-    def delete(self, id: str) -> Vault:
+    async def delete(self, id: str) -> Vault:
         pass
