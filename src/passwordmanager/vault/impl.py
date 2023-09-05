@@ -1,14 +1,9 @@
 import json
 
 from io import StringIO
-from typing import TypedDict
 from .interface import Vault, VaultRepository
 
 __all__ = ["JSONVaultRepository"]
-
-
-class VaultJSON(TypedDict):
-    accounts: list[dict[str, str]]
 
 
 class JSONVaultRepository(VaultRepository):
@@ -16,7 +11,7 @@ class JSONVaultRepository(VaultRepository):
         self.data = data
 
     @property
-    def vaults(self) -> dict[str, dict[str, list[dict[str, str]]]]:
+    def vaults(self) -> dict:
         return json.load(self.data)
 
     async def get(self, id: str) -> Vault | None:
