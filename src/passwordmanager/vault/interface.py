@@ -17,6 +17,9 @@ class Vault:
 
 
 class VaultRepository(ABC):
+    class VaultExists(Exception):
+        pass
+
     @abstractmethod
     async def get(self, id: str) -> Vault:
         pass

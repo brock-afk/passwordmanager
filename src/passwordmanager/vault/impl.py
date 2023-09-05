@@ -1,3 +1,4 @@
+import os
 import json
 
 from .interface import Vault, VaultRepository
@@ -28,8 +29,16 @@ class JSONVaultRepository(VaultRepository):
             ],
         )
 
-    async def create(self, id: str) -> Vault:
-        pass
+    async def create(self, vault_id: str) -> Vault:
+        if os.path.exists(f"{self.vaults_directory}/{vault_id}.json"):
+            raise self.VaultExists("A vault with this ID already exists.")
+
+        with open(f"{self.vaults_directory}/{vault_id}.json", "w") as data:
+            json.dump({"accounts": []}, data)
+
+        self.save(vault_id, {"accounts": []})
+
+        return Vault(id=vault_id, accounts=[])
 
     async def delete(self, id: str) -> Vault:
         pass
