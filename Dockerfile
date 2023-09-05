@@ -2,6 +2,8 @@ FROM python:3.11.4-slim
 
 WORKDIR /app
 
+RUN mkdir -p /data/vaults
+
 RUN pip install --upgrade pip
 RUN pip install poetry==1.5.1
 
