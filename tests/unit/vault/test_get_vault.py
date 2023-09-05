@@ -1,20 +1,21 @@
 import json
 import pytest
 
+from io import StringIO
 from passwordmanager.vault import Vault, JSONVaultRepository
 
 
 @pytest.mark.vault
-def test_json_vault_repository_get_returns_none_when_vault_does_not_exist():
-    repository = JSONVaultRepository("{}")
+async def test_json_vault_repository_get_returns_none_when_vault_does_not_exist():
+    repository = JSONVaultRepository(StringIO("{}"))
 
-    vault = repository.get("vault-id")
+    vault = await repository.get("vault-id")
 
     assert vault is None
 
 
 @pytest.mark.vault
-def test_json_vault_repository_get_returns_vault():
+async def test_json_vault_repository_get_returns_vault():
     vaults = {
         "vault-id": {
             "accounts": [
@@ -26,15 +27,15 @@ def test_json_vault_repository_get_returns_vault():
             ]
         }
     }
-    repository = JSONVaultRepository(json.dumps(vaults))
+    repository = JSONVaultRepository(StringIO(json.dumps(vaults)))
 
-    vault = repository.get("vault-id")
+    vault = await repository.get("vault-id")
 
     assert isinstance(vault, Vault)
 
 
 @pytest.mark.vault
-def test_json_vault_repository_get_returns_correct_vault():
+async def test_json_vault_repository_get_returns_correct_vault():
     vaults = {
         "vault-id": {
             "accounts": [
@@ -46,9 +47,9 @@ def test_json_vault_repository_get_returns_correct_vault():
             ]
         }
     }
-    repository = JSONVaultRepository(json.dumps(vaults))
+    repository = JSONVaultRepository(StringIO(json.dumps(vaults)))
 
-    vault = repository.get("vault-id")
+    vault = await repository.get("vault-id")
 
     assert vault.id == "vault-id"
     assert len(vault.accounts) == 1
