@@ -5,6 +5,13 @@ services:
     build: .
     volumes:
       - ./:/app
+  server:
+    build: .
+    volumes:
+      - ./:/app
+    command: ["sanic", "passwordmanager.server:app", "--dev", "--host=0.0.0.0"]
+    ports:
+      - 8000:8000
   poetry:
     build: .
     volumes:
