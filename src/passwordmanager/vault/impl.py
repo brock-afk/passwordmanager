@@ -1,27 +1,23 @@
 import json
 
-from io import StringIO
 from .interface import Vault, VaultRepository
 
 __all__ = ["JSONVaultRepository"]
 
 
 class JSONVaultRepository(VaultRepository):
-    def __init__(self, data: StringIO):
-        self.data = data
+    def __init__(self, vaults_directory: str):
+        self.vaults_directory = vaults_directory
 
-    @property
-    def vaults(self) -> dict:
-        return json.load(self.data)
-
-    async def get(self, id: str) -> Vault | None:
-        vault = self.vaults.get(id)
-
-        if vault is None:
+    async def get(self, vault_id: str) -> Vault | None:
+        try:
+            with open(f"{self.vaults_directory}/{vault_id}.json", "r") as data:
+                vault = json.load(data)
+        except FileNotFoundError:
             return None
 
         return Vault(
-            id=id,
+            id=vault_id,
             accounts=[
                 Vault.Account(
                     name=account["name"],
@@ -38,5 +34,6 @@ class JSONVaultRepository(VaultRepository):
     async def delete(self, id: str) -> Vault:
         pass
 
-    def save(self) -> None:
-        json.dump(self.vaults, self.data)
+    def save(self, vault_id: str, vault: dict) -> None:
+        with open(f"{self.vaults_directory}/{vault_id}.json", "w") as data:
+            json.dump(vault, data)
