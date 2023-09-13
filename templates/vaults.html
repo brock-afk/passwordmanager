@@ -1,18 +1,18 @@
-<head>
-    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
-</head>
-<body>
-    <div>
-        <h1>Vaults</h1>
-    </div>
-    <div>
-        {% block content %}
-            {% for vault in vaults %}
-                <div>
-                    <a href="/vault/{{ vault.id }}">{{ vault.id }}</a>
-                </div>
-            {% endfor %}
-        {% endblock %}
-    </div>
-    <button hx-post="/vaults/new" hx-swap="outerHTML" hx-trigger="click">Create Vault</button>
-</body>
+<table id="vaults-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vault in vaults %}
+            <tr>
+                <td>{{ vault.id }}</td>
+                <td>Element 1</td>
+                <td>This is the first element in the list.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

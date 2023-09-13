@@ -6,8 +6,8 @@ from passwordmanager.vault import JSONVaultRepository
 app = Sanic("passwordmanager")
 
 
-@app.get("/vaults")
-@app.ext.template("vaults.html")
+@app.get("/")
+@app.ext.template("index.html")
 async def get_vaults(request: Request):
     vault_repository = JSONVaultRepository("/data/vaults")
     vaults = await vault_repository.get_all()
