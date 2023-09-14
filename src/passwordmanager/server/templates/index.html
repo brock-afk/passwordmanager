@@ -1,0 +1,14 @@
+<head>
+    <title>Password Manager</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/vaults.css">
+</head>
+<body>
+    <div>
+        <h1>Vaults</h1>
+    </div>
+    
+    {% include 'vaults.html' %}
+
+    <button id="create-vault-button" hx-post="/vaults/new" hx-swap="outerHTML" hx-target="#vaults-table" hx-trigger="click">Create Vault</button>
+</body>
