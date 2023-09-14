@@ -1,10 +1,12 @@
 import uuid
 import pathlib
 
-from fastapi import FastAPI, Request
+from typing import Annotated
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request, Depends
 from fastapi.templating import Jinja2Templates
-from passwordmanager.vault import JSONVaultRepository
+from passwordmanager.vault import VaultRepository, JSONVaultRepository
 
 app = FastAPI()
 
@@ -19,9 +21,15 @@ templates = Jinja2Templates(
 )
 
 
-@app.get("/")
-async def get_vaults(request: Request):
-    vault_repository = JSONVaultRepository("/data/vaults")
+def vault_repository() -> VaultRepository:
+    return JSONVaultRepository("/data/vaults")
+
+
+@app.get("/", response_class=HTMLResponse)
+async def get_vaults(
+    request: Request,
+    vault_repository: Annotated[VaultRepository, Depends(vault_repository)],
+):
     vaults = await vault_repository.get_all()
 
     return templates.TemplateResponse(
@@ -29,10 +37,11 @@ async def get_vaults(request: Request):
     )
 
 
-@app.post("/vaults/new")
-async def create_vault(request: Request):
-    vault_repository = JSONVaultRepository("/data/vaults")
-
+@app.post("/vaults/new", response_class=HTMLResponse)
+async def create_vault(
+    request: Request,
+    vault_repository: Annotated[VaultRepository, Depends(vault_repository)],
+):
     await vault_repository.create(str(uuid.uuid4()))
     vaults = await vault_repository.get_all()
 
