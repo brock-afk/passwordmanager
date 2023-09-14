@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-__all__ = ["Vault"]
+__all__ = ["Vault", "VaultRepository"]
 
 
 @dataclass
