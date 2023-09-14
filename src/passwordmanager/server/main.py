@@ -1,4 +1,5 @@
 import uuid
+import pathlib
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
@@ -7,9 +8,15 @@ from passwordmanager.vault import JSONVaultRepository
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount(
+    "/static",
+    StaticFiles(directory=pathlib.Path("./src/passwordmanager/server/static")),
+    name="static",
+)
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(
+    directory=pathlib.Path("./src/passwordmanager/server/templates")
+)
 
 
 @app.get("/")
