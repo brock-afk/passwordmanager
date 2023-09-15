@@ -2,6 +2,8 @@ import asyncpg.connection
 
 from ..interface import Vault, VaultRepository
 
+__all__ = ["PostgresVaultRepository"]
+
 
 class PostgresVaultRepository(VaultRepository):
     def __init__(self, db_connection: asyncpg.connection.Connection) -> None:
