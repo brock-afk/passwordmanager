@@ -10,8 +10,8 @@
         {% for vault in vaults %}
             <tr>
                 <td>{{ vault.id }}</td>
-                <td>Element 1</td>
-                <td>This is the first element in the list.</td>
+                <td>{{ vault.name }}</td>
+                <td>{{ vault.description }}</td>
             </tr>
         {% endfor %}
     </tbody>

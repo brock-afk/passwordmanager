@@ -12,7 +12,7 @@ class PostgresVaultRepository(VaultRepository):
     async def get_all(self) -> list[Vault]:
         result = await self.db_connection.fetch(
             """
-            SELECT id
+            SELECT id, name, description
             FROM vault
             """
         )
@@ -20,6 +20,8 @@ class PostgresVaultRepository(VaultRepository):
         return [
             Vault(
                 id=vault["id"],
+                name=vault["name"],
+                description=vault["description"],
                 accounts=[],
             )
             for vault in result
@@ -28,18 +30,20 @@ class PostgresVaultRepository(VaultRepository):
     async def get(self, vault_id: str) -> Vault | None:
         pass
 
-    async def create(self, vault_id: str) -> Vault:
+    async def create(self, name: str, description: str) -> Vault:
         result = await self.db_connection.fetchrow(
             """
             INSERT INTO vault (name, description, created_at, updated_at)
             VALUES ($1, $2, CLOCK_TIMESTAMP(), CLOCK_TIMESTAMP())
-            RETURNING id
+            RETURNING id, name, description
             """,
-            vault_id,
-            "description",
+            name,
+            description,
         )
 
         return Vault(
             id=result["id"],
+            name=result["name"],
+            description=result["description"],
             accounts=[],
         )

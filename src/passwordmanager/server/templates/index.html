@@ -2,6 +2,7 @@
     <title>Password Manager</title>
     <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/vaults.css">
+    <link rel="stylesheet" href="/static/form.css">
 </head>
 <body>
     <div>
@@ -10,5 +11,15 @@
     
     {% include 'vaults.html' %}
 
-    <button id="create-vault-button" hx-post="/vaults/new" hx-swap="outerHTML" hx-target="#vaults-table" hx-trigger="click">Create Vault</button>
+    <div id="addEntryForm">
+        <h2>Add New Entry</h2>
+        <form id="entryForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description">
+            <br>
+            <button id="create-vault-button" hx-post="/vaults/new" hx-swap="outerHTML" hx-target="#vaults-table" hx-trigger="click">Create Vault</button>
+        </form>
+    </div>
 </body>
