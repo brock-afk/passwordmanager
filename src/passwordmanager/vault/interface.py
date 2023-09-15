@@ -31,7 +31,3 @@ class VaultRepository(ABC):
     @abstractmethod
     async def create(self, id: str) -> Vault:
         pass
-
-    @abstractmethod
-    async def delete(self, id: str) -> Vault:
-        pass

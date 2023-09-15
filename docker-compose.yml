@@ -1,10 +1,41 @@
 version: "3.8"
 
 services:
+  # utility services
+  poetry:
+    build: .
+    volumes:
+      - ./:/app
+    entrypoint: poetry
   pm:
     build: .
     volumes:
       - ./:/app
+  pytest:
+    build: .
+    volumes:
+      - ./:/app
+    entrypoint: ["poetry", "run", "pytest", "-v", "-s"]
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test
+      POSTGRES_HOST: postgres_test
+    depends_on:
+      - postgres_test
+  postgres_test:
+    image: postgres:15.4-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test
+    ports:
+      - 5433:5432
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+
+
+  # main services
   server:
     build: .
     volumes:
@@ -12,8 +43,19 @@ services:
     command: ["uvicorn", "passwordmanager.server.main:app", "--reload", "--host=0.0.0.0", "--port=8000"]
     ports:
       - 8000:8000
-  poetry:
-    build: .
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:15.4-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
     volumes:
-      - ./:/app
-    entrypoint: poetry
+      - ./sql:/docker-entrypoint-initdb.d/
