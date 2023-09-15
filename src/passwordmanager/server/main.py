@@ -1,12 +1,15 @@
+import os
 import uuid
 import pathlib
+import asyncpg
+import asyncpg.connection
 
 from typing import Annotated
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Depends
 from fastapi.templating import Jinja2Templates
-from passwordmanager.vault import VaultRepository, JSONVaultRepository
+from passwordmanager.vault import VaultRepository, PostgresVaultRepository
 
 app = FastAPI()
 
@@ -21,8 +24,19 @@ templates = Jinja2Templates(
 )
 
 
-def vault_repository() -> VaultRepository:
-    return JSONVaultRepository("/data/vaults")
+async def db_connection() -> asyncpg.connection.Connection:
+    return await asyncpg.connect(
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
+        database=os.getenv("POSTGRES_DB"),
+        host=os.getenv("POSTGRES_HOST", "postgres"),
+    )
+
+
+def vault_repository(
+    db_connection: Annotated[asyncpg.connection.Connection, Depends(db_connection)]
+) -> VaultRepository:
+    return PostgresVaultRepository(db_connection)
 
 
 @app.get("/", response_class=HTMLResponse)
