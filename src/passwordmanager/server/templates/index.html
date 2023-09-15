@@ -1,25 +1,37 @@
 <head>
     <title>Password Manager</title>
     <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/static/vaults.css">
-    <link rel="stylesheet" href="/static/form.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div>
-        <h1>Vaults</h1>
-    </div>
-    
     {% include 'vaults.html' %}
-
     <div id="addEntryForm">
-        <h2>Add New Entry</h2>
-        <form id="entryForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description">
-            <br>
-            <button id="create-vault-button" hx-post="/vaults/new" hx-swap="outerHTML" hx-target="#vaults-table" hx-trigger="click">Create Vault</button>
-        </form>
+        <div class="min-h-screen flex items-center justify-center">
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2" action="#" method="POST">
+                <h2 class="text-2xl font-semibold mb-4">Create Item</h2>
+                <!-- Item Name -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="item-name">Name</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Item Name" name="name" required>
+                </div>
+                <!-- Item Description -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="item-description">Description</label>
+                    <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" placeholder="Item Description" name="description" rows="4" required></textarea>
+                </div>
+                <!-- Submit Button -->
+                <div class="flex items-center justify-between">
+                    <button
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        hx-post="/vaults/new"
+                        hx-swap="outerHTML"
+                        hx-target="#vaults-table"
+                        hx-trigger="click"
+                        >
+                        Create Vault
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
