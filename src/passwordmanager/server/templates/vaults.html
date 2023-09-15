@@ -1,18 +1,19 @@
-<table id="vaults-table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for vault in vaults %}
+<div class="bg-white shadow-md rounded" id="vaults-table">
+    <h2 class="text-2xl font-semibold px-6 py-4">Vaults</h2>
+    <table class="min-w-full">
+        <thead>
             <tr>
-                <td>{{ vault.id }}</td>
-                <td>{{ vault.name }}</td>
-                <td>{{ vault.description }}</td>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-semibold text-gray-700 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-semibold text-gray-700 uppercase tracking-wider">Description</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for vault in vaults %}
+                <tr class="border-b">
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ vault.name }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ vault.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
