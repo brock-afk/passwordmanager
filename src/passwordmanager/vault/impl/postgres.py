@@ -27,4 +27,17 @@ class PostgresVaultRepository(VaultRepository):
         pass
 
     async def create(self, vault_id: str) -> Vault:
-        pass
+        result = await self.db_connection.fetchrow(
+            """
+            INSERT INTO vault (name, description, created_at, updated_at)
+            VALUES ($1, $2, CLOCK_TIMESTAMP(), CLOCK_TIMESTAMP())
+            RETURNING id
+            """,
+            vault_id,
+            "description",
+        )
+
+        return Vault(
+            id=result["id"],
+            accounts=[],
+        )
