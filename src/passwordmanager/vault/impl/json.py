@@ -1,8 +1,6 @@
 import json
 import pathlib
 
-from passwordmanager.vault.interface import Vault
-
 from ..interface import Vault, VaultRepository
 
 __all__ = ["JSONVaultRepository"]
@@ -62,9 +60,6 @@ class JSONVaultRepository(VaultRepository):
         self.save(vault_id, {"accounts": []})
 
         return Vault(id=vault_id, accounts=[])
-
-    async def delete(self, id: str) -> Vault:
-        pass
 
     def save(self, vault_id: str, vault: dict) -> None:
         with open(f"{self.vaults_directory}/{vault_id}.json", "w") as data:
