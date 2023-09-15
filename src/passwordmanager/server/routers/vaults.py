@@ -1,6 +1,6 @@
-import uuid
 import pathlib
 
+from fastapi import Form
 from typing import Annotated
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -32,8 +32,10 @@ async def get_vaults(
 async def create_vault(
     request: Request,
     vault_repository: Annotated[VaultRepository, Depends(vault_repository)],
+    name: str = Form(...),
+    description: str | None = Form(default=""),
 ):
-    await vault_repository.create(str(uuid.uuid4()))
+    await vault_repository.create(name, description)
     vaults = await vault_repository.get_all()
 
     return templates.TemplateResponse(

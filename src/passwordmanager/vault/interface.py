@@ -13,6 +13,8 @@ class Vault:
         password: str
 
     id: str
+    name: str
+    description: str | None
     accounts: list[Account]
 
 
@@ -29,5 +31,5 @@ class VaultRepository(ABC):
         pass
 
     @abstractmethod
-    async def create(self, id: str) -> Vault:
+    async def create(self, name: str, description: str) -> Vault:
         pass
