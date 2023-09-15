@@ -3,7 +3,7 @@ import pathlib
 
 from passwordmanager.vault.interface import Vault
 
-from .interface import Vault, VaultRepository
+from ..interface import Vault, VaultRepository
 
 __all__ = ["JSONVaultRepository"]
 
