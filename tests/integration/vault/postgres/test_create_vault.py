@@ -11,7 +11,7 @@ async def test_create_vault_inserts_into_vault_table(
 ):
     vault_repository = PostgresVaultRepository(postgres_connection)
 
-    await vault_repository.create("vault_name")
+    await vault_repository.create("vault_name", "vault_description")
 
     result = await postgres_connection.fetch(
         """
@@ -29,6 +29,6 @@ async def test_create_vault_returns_vault(
 ):
     vault_repository = PostgresVaultRepository(postgres_connection)
 
-    vault = await vault_repository.create("vault_name")
+    vault = await vault_repository.create("vault_name", "vault_description")
 
     assert isinstance(vault, Vault)
